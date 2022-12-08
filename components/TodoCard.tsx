@@ -80,7 +80,7 @@ const TodoCard = () => {
     >
       <Flex
         height="auto"
-        width="60vw"
+        width="100vw"
         direction="column"
         background="blue1.200"
         p={12}
