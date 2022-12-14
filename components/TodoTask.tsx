@@ -27,7 +27,7 @@ export default function TodoTask({
       <Stack mt={"4"} spacing={"3"} bg={"white"} rounded={"md"} width={"auto"}>
         <Box>
           <Flex alignItems={"center"} justifyContent="center"  >
-            <Text h="8" fontSize="2xl" m={2} >
+            <Text h="8" fontSize="2xl" m={2} w={"auto"}>
               {task.name}
             </Text>
             <Spacer />
