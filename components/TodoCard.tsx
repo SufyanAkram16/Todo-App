@@ -16,7 +16,6 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  updateDoc,
   setDoc,
 } from "firebase/firestore";
 import React, { ChangeEvent, useState, useEffect } from "react";
@@ -27,7 +26,7 @@ export type taskType = {
   id: string;
 };
 
-const TodoCard = (item: taskType) => {
+const TodoCard = () => {
   const [task, setTask] = useState<string>("");
   const [todoList, setTodoList] = useState<taskType[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);

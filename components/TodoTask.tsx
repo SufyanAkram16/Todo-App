@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { taskType } from "./TodoCard";
-import TodoCard from "./TodoCard";
 
 interface todoProps {
   task: taskType;
