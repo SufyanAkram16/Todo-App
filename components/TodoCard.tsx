@@ -136,7 +136,7 @@ const TodoCard = () => {
     >
       <Flex
         height="auto"
-        width="auto"
+        width="100vw"
         direction="column"
         background="blue1.200"
         p={12}
@@ -147,7 +147,7 @@ const TodoCard = () => {
           <Heading mb={6}>Todo List</Heading>
         </Center>
 
-        <Center mb={6}>
+        <Center mb={1}>
           <InputGroup>
             <Input
               fontSize="2xl"
@@ -157,6 +157,7 @@ const TodoCard = () => {
               name="task"
               value={task}
               onChange={(e) => setTask(e.target.value)}
+              width="100vw"
               h={"3rem"}
               border="2px"
               borderColor={"blue1.300"}
@@ -183,7 +184,7 @@ const TodoCard = () => {
           </InputGroup>
         </Center>
         <Center>
-          <Box p={4} color="blue1.300">
+          <Box width ={'100%'} p={4} color="blue1.300">
             {todoList.map((item: taskType) => {
               return (
                 <TodoTask

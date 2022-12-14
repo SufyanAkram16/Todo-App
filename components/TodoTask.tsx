@@ -24,10 +24,10 @@ export default function TodoTask({
 }: todoProps) {
   return (
     <>
-      <Stack mt={"4"} spacing={"3"} bg={"white"} rounded={"md"} width={"auto"}>
-        <Box>
-          <Flex alignItems={"center"} justifyContent="center"  >
-            <Text h="8" fontSize="2xl" m={2} w={"auto"}>
+      <Stack mt={"4"} spacing={"3"} bg={"white"} rounded={"md"} w={"100%"}>
+        <Box >
+          <Flex alignItems={"center"} justifyContent="center" >
+            <Text h="8" fontSize="2xl" m={2} >
               {task.name}
             </Text>
             <Spacer />
