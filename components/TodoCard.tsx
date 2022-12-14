@@ -41,13 +41,17 @@ const TodoCard = () => {
       name: task,
     };
 
-    try {
-      const docRef = await addDoc(collection(db, "TodoList"), newDoc);
-      console.log("Document written with ID: ", docRef.id);
-      setTodoList([...todoList, { ...newDoc, id: docRef.id }]);
-      setTask("");
-    } catch (error) {
-      console.log(error);
+    if (task) {
+      try {
+        const docRef = await addDoc(collection(db, "TodoList"), newDoc);
+        console.log("Document written with ID: ", docRef.id);
+        setTodoList([...todoList, { ...newDoc, id: docRef.id }]);
+        setTask("");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("fill data");
     }
   };
 
@@ -127,6 +131,7 @@ const TodoCard = () => {
       height="100vh"
       alignItems={"center"}
       justifyContent="center"
+      width="auto"
       bg="blue.300"
     >
       <Flex
@@ -157,7 +162,7 @@ const TodoCard = () => {
               borderColor={"blue1.300"}
             />
             <InputRightElement
-              width="4rem"
+              width="3rem"
               h={"3rem"}
               children={
                 <Button
