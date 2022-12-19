@@ -10,10 +10,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         // ...
         200: "#caeff9",
         300: "#3a7bd5",
-        400: "#d8e5f7"
+        400: "#d8e5f7",
       },
     },
   });
+
   return (
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />

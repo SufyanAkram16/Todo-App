@@ -6,28 +6,29 @@ import {
   Flex,
   Text,
   Spacer,
-  Button,
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { taskType } from "./TodoCard";
 
-interface todoProps {
+ export interface todoProps {
   task: taskType;
   deleteTask(task: taskType): void;
   onUpdateHandler(item: taskType): void;
+  completeHandler(item: taskType): void;
 }
 
 export default function TodoTask({
   task,
   deleteTask,
   onUpdateHandler,
+  completeHandler,
 }: todoProps) {
   return (
     <>
       <Stack mt={"4"} spacing={"3"} bg={"white"} rounded={"md"} w={"100%"}>
-        <Box >
-          <Flex alignItems={"center"} justifyContent="center" >
-            <Text h="8" fontSize="2xl" m={2} >
+        <Box>
+          <Flex alignItems={"center"} justifyContent="center">
+            <Text h="8" fontSize="2xl" m={2}>
               {task.name}
             </Text>
             <Spacer />
@@ -41,6 +42,9 @@ export default function TodoTask({
               m={2}
               p={1}
               icon={<CheckIcon color={"blue"} />}
+              onClick={() => {
+                completeHandler(task);
+              }}
             />
 
             <IconButton

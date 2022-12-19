@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   InputRightElement,
+  Divider,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { db } from "../config/firebase";
@@ -18,8 +19,9 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore";
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TodoTask from "./TodoTask";
+import CompleteTask from "./CompleteTask";
 
 export type taskType = {
   name: string;
@@ -31,10 +33,49 @@ const TodoCard = () => {
   const [todoList, setTodoList] = useState<taskType[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [prevId, setPrevId] = useState(String);
+  const [completeTodo, setCompleteTodo] = useState<taskType[]>([]);
 
   useEffect(() => {
     getData();
+    getCompleteData();
   }, []);
+
+  const completeHandler = (todo: taskType) => {
+    const completeTask = todoList.filter((item: taskType) => {
+      if (todo.id !== item.id) {
+        return item;
+      } else {
+        setCompleteTodo([...completeTodo, item]);
+      }
+    });
+
+    todoList.forEach(async (item: taskType) => {
+      if (todo.id === item.id) {
+        await deleteDoc(doc(db, "TodoList", item.id));
+      }
+    });
+
+    todoList.forEach(async (item: taskType) => {
+      if (todo.id === item.id) {
+        const docRef = await addDoc(collection(db, "CompletedTodos"), item);
+        setCompleteTodo([...completeTask, { ...item }]);
+      }
+    });
+
+    setTodoList(completeTask);
+  };
+
+  const completeDeleteHandler = async (item: taskType) => {
+    const completDeleteTodo = completeTodo.filter(
+      (todo: taskType) => item.id !== todo.id
+    );
+    completeTodo.forEach(async (todo: taskType) => {
+      if (item.id === todo.id) {
+        await deleteDoc(doc(db, "CompletedTodos", todo.id));
+      }
+    });
+    setCompleteTodo(completDeleteTodo);
+  };
 
   const addtask = async () => {
     const newDoc = {
@@ -87,6 +128,22 @@ const TodoCard = () => {
       });
 
       setTodoList(todoData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCompleteData = async () => {
+    try {
+      const getCompleteTodos = await getDocs(collection(db, "CompletedTodos"));
+      let completeTodo: taskType[] = [];
+      getCompleteTodos.forEach((doc) => {
+        completeTodo.push({
+          name: doc.data()?.name,
+          id: doc.id,
+        });
+      });
+      setCompleteTodo(completeTodo);
     } catch (error) {
       console.log(error);
     }
@@ -184,17 +241,45 @@ const TodoCard = () => {
           </InputGroup>
         </Center>
         <Center>
-          <Box width ={'100%'} p={4} color="blue1.300">
-            {todoList.map((item: taskType) => {
-              return (
-                <TodoTask
-                  task={item}
-                  deleteTask={deleteTask}
-                  onUpdateHandler={onUpdateHandler}
-                />
-              );
-            })}
-          </Box>
+          <Flex>
+            <Box width={"95vw"} p={4} color="blue1.300">
+              {todoList.map((item: taskType) => {
+                return (
+                  <>
+                    <TodoTask
+                      task={item}
+                      deleteTask={deleteTask}
+                      onUpdateHandler={onUpdateHandler}
+                      completeHandler={completeHandler}
+                    />
+                  </>
+                );
+              })}
+            </Box>
+          </Flex>
+        </Center>
+        <Divider width={"100%"} padding={2} borderColor="blue1.300" />
+        <Center>
+          <Flex direction={"column"}>
+            <Box width={"95vw"} p={4} color="blue1.300">
+              {completeTodo.length > 0 ? (
+                completeTodo.map((item: taskType) => {
+                  return (
+                    <>
+                      <CompleteTask
+                        completeTodo={item}
+                        completeDeleteHandler={completeDeleteHandler}
+                      />
+                    </>
+                  );
+                })
+              ) : (
+                <Center>
+                  <Heading mb={6}>No Task Completed Yet !!!</Heading>
+                </Center>
+              )}
+            </Box>
+          </Flex>
         </Center>
       </Flex>
     </Flex>
